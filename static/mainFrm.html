@@ -22,22 +22,23 @@
 
                     <div class="systemTool">
                         <el-dropdown trigger="click">
-                            <span class="el-dropdown-link">关于</span>
+                            <span class="el-dropdown-link">about</span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item icon="el-icon-link">
                                     <a class="mylink" href="https://tools.heisir.cn/HLSDownload/"
-                                        v-on:click.stop.prevent="clickAClick">官网</a>
+                                        v-on:click.stop.prevent="clickAClick">Official website</a>
                                 </el-dropdown-item>
                                 <el-dropdown-item icon="el-icon-link">
                                     <a class="mylink" href="https://github.com/HeiSir2014/M3U8-Downloader"
-                                        v-on:click.stop.prevent="clickAClick">开放源码</a>
+                                        v-on:click.stop.prevent="clickAClick">open source</a>
                                 </el-dropdown-item>
                                 <el-dropdown-item icon="el-icon-connection">
                                     <a class="mylink" href="https://jq.qq.com/?_wv=1027&k=nhFrZBS0"
-                                        v-on:click.stop.prevent="clickAClick">点击加群</a>
+                                        v-on:click.stop.prevent="clickAClick">Click to join the group
+                                    </a>
                                 </el-dropdown-item>
                                 <el-dropdown-item icon="el-icon-connection">
-                                    <a class="mylink" href="#" v-on:click.stop.prevent="clickStartHookUrl">资源嗅探</a>
+                                    <a class="mylink" href="#" v-on:click.stop.prevent="clickStartHookUrl">Resource sniffing</a>
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -48,17 +49,17 @@
                 <el-main class="main">
                     <el-tabs tab-position="left" type="border-card" style="height: 100%;" v-model="tabPane">
                         <el-tab-pane>
-                            <span slot="label"><i class="el-icon-download"></i> 资源下载</span>
+                            <span slot="label"><i class="el-icon-download"></i> Source of resources</span>
                             <el-tabs type="border-card">
-                                <el-tab-pane label="M3U8视频下载">
+                                <el-tab-pane label="M3U8 video download">
                                     <el-row :gutter="8">
                                         <el-col :span="3" :offset="1">
                                             <el-button class="mybutton" type="primary" icon="el-icon-news"
-                                                @click="clickNewTask">新建下载</el-button>
+                                                @click="clickNewTask">new construction</el-button>
                                         </el-col>
                                         <el-col :span="4" :offset="1">
                                             <el-button class="mybutton" type="danger" icon="el-icon-news"
-                                                @click="clickClearTask">清空下载任务( {{allVideos.length}} )</el-button>
+                                                @click="clickClearTask">Clear air duty( {{allVideos.length}} )</el-button>
                                         </el-col>
                                         <el-col v-show="false" :span="4" :offset="11">
                                             <div class="speed el-icon-download">{{downloadSpeed}}</div>
@@ -69,17 +70,17 @@
                                             <div class="m3u8"></div>
                                             <div class="link"><input type="text" :value="o.url" :title="o.url" readonly></div>
 
-                                            <div class="name"><span>名称：</span><span class="value" :title="o.taskName">{{o.taskName}}</span>
+                                            <div class="name"><span>name:</span><span class="value" :title="o.taskName">{{o.taskName}}</span>
                                             </div>
-                                            <div class="time"><span>时间：</span><span class="value" :title="o.time">{{o.time}}</span>
+                                            <div class="time"><span>Time:</span><span class="value" :title="o.time">{{o.time}}</span>
                                             </div>
                                             <div class="status">
-                                                <span>状态：</span><span class="value" :title="o.status">{{o.status}}</span>
+                                                <span>Status:</span><span class="value" :title="o.status">{{o.status}}</span>
                                             </div>
                                             <div class="opt">
                                                 <div class="top">
                                                     <input class="opendir" opt="opendir" :data="o.dir" type="button"
-                                                        value="打开文件夹" @click="clickItemOptData">
+                                                        value="Opening text item" @click="clickItemOptData">
                                                 </div>
                                                 <div class="bottom">
                                                     <input class="del" opt="delvideo" :data="o.id" type="button"
@@ -93,16 +94,16 @@
                                         </li>
                                         <el-alert v-if="!allVideos.length"
                                             style="margin-top: 10px; height: 100px; line-height: 1;"
-                                            title="您还没有添加下载任务，在浏览器里嗅探到M3U8(HLS协议)视频流后，可以在这里缓存下载，快来试试吧。" type="success"
+                                            title="If you have not added any additional information, please take a look at M3U8 (HLS)." type="success"
                                             effect="light" :closable="false" :center="true" show-icon></el-alert>
                                     </ul>
-                                    <el-dialog title="新建下载任务" :visible.sync="dlg_newtask_visible" width="60%"
+                                    <el-dialog title="New construction duties" :visible.sync="dlg_newtask_visible" width="60%"
                                         :modal="true" :close-on-click-modal="false" :close-on-press-escape="false"
                                         :center="false">
                                         <el-form label-width="80px">
-                                            <el-form-item label="视频源" label-position="right">
+                                            <el-form-item label="View source" label-position="right">
                                                 <div @drop="dropM3U8File" @dragover.prevent @dragenter.prevent>
-                                                    <el-input placeholder="输入在线网络视频源URL，或将M3U8文件拖拽至此" v-model="m3u8_url"
+                                                    <el-input placeholder="Import the link to the source URL, or send the M3U8 text to this page." v-model="m3u8_url"
                                                         draggable="false" @input="m3u8UrlChange">
                                                         <i slot="prefix" class="el-input__icon el-icon-link"></i>
                                                         <i slot="suffix" class="el-input__icon el-icon-folder-opened"
@@ -110,46 +111,46 @@
                                                     </el-input>
                                                 </div>
                                             </el-form-item>
-                                            <el-form-item v-if="playlists.length" label="* 画质" label-position="right">
-                                                <el-select v-model="playlistUri" placeholder="选择视频源"
+                                            <el-form-item v-if="playlists.length" label="* Paint quality" label-position="right">
+                                                <el-select v-model="playlistUri" placeholder="Selection source"
                                                     style="width: 100%;">
                                                     <el-option v-for="playlist in playlists" :key="playlist.uri"
                                                         :label="getPlaylistLabel(playlist)" :value="playlist.uri">
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
-                                            <el-form-item label="任务名" label-position="right">
-                                                <el-input type="text" placeholder="[可空] 默认当前时间戳" v-model="taskName">
+                                            <el-form-item label="Job name" label-position="right">
+                                                <el-input type="text" placeholder="[Available] Please check the actual time" v-model="taskName">
                                                 </el-input>
                                             </el-form-item>
-                                            <el-form-item label="URL前缀" label-position="right"
+                                            <el-form-item label="URL front" label-position="right"
                                                 v-if="m3u8_url.startsWith('file:///')">
                                                 <el-tooltip effect="light" placement="top-start">
                                                     <div slot="content">
-                                                        如果M3U8文件是从网上直接下载下来的，TS流是在网络上的且M3U8文件里没有URL(http)前缀，就需要填写<br /><br />
-                                                        如果TS视频流在M3U8文件目录下，则不需要填写这块<br /></div>
+                                                        As a result, the M3U8 text is directly below, the TS style is directly below, and the M3U8 text is not available at the URL (http) before closing, job demand copy.<br /><br />
+                                                        As a result, the current M3U8 text of the TS video is below, and the unnecessary copying is done.<br /></div>
                                                     <el-input type="text"
-                                                        placeholder="[可空] M3U8 URL前缀，例如：http://heisir.cn/cdn/123456/"
+                                                        placeholder="[Available] M3U8 URL front, example：http://heisir.cn/cdn/123456/"
                                                         v-model="m3u8_url_prefix"></el-input>
                                                 </el-tooltip>
                                             </el-form-item>
-                                            <el-form-item label="附加头" label-position="right">
-                                                <el-input type="textarea" :rows="4" placeholder="[可空] 请输入一行一个Header，例如：
+                                            <el-form-item label="additional head" label-position="right">
+                                                <el-input type="textarea" :rows="4" placeholder="[Empty] One line and one Header, for example：
                 Origin: http://www.host.com
                 Referer: http://www.host.com" v-model="headers"></el-input>
                                             </el-form-item>
-                                            <el-form-item label="私有KEY" label-position="right">
+                                            <el-form-item label="Private KEY" label-position="right">
                                                 <el-tooltip effect="light" placement="top-start">
                                                     <div slot="content">
-                                                        32位HEX格式KEY和32位IV值，IV值可空<br />示例：<br />ABABABABABBBBBBBABABABABABBBBBBBABABABABABBBBBBBABABABABABBBBBBB<br />或者：<br />ABABABABABBBBBBBABABABABABBBBBBB<br />
+                                                        32nd place HEX format KEY sum 32nd place IV 值、IV 值可空<br />Illustrative example:<br />ABABABABABBBBBBBABABABABABBBBBBBABABABABABBBBBBBABABABABABBBBBBB<br />或者：<br />ABABABABABBBBBBBABABABABABBBBBBB<br />
                                                     </div>
-                                                    <el-input type="text" placeholder="[可空] KEY和IV值(HEX格式)"
+                                                    <el-input type="text" placeholder="[Available] KEY Japanese IV (HEX format)"
                                                         v-model="myKeyIV">
                                                     </el-input>
                                                 </el-tooltip>
                                             </el-form-item>
-                                            <el-form-item label="合并完成" label-position="right">
-                                                <el-checkbox v-model="taskIsDelTs" label="删除TS片段"></el-checkbox>
+                                            <el-form-item label="Combined completion" label-position="right">
+                                                <el-checkbox v-model="taskIsDelTs" label="TS single stage"></el-checkbox>
                                             </el-form-item>
                                         </el-form>
                                         <div slot="footer" class="dialog-footer">
@@ -160,43 +161,43 @@
                                                 </el-col>
                                                 <el-col :span="8" :offset="1">
                                                     <el-button type="primary" @click="clickNewTaskOK"
-                                                        style="width: 100%;">确 定
+                                                        style="width: 100%;">Definitely
                                                     </el-button>
                                                 </el-col>
                                             </el-row>
                                         </div>
                                     </el-dialog>
                                 </el-tab-pane>
-                                <el-tab-pane label="M3U8批量下载">
+                                <el-tab-pane label="M3U8 review">
                                     <el-form label-width="130px" style="margin-right: 65px;">
-                                        <el-form-item label="批量视频源" label-position="right">
-                                            <el-input type="textarea" :rows="6" placeholder="请输入一行一个M3U8视频源，格式：视频源----任务名（可空）,例如：
-                https://host/index1.m3u8----第一个视频
-                https://host/index2.m3u8----第二个视频
+                                        <el-form-item label="Criticism source" label-position="right">
+                                            <el-input type="textarea" :rows="6" placeholder="Import one line one M3U8 video source, Format: video source----Job name (empty), example：
+                https://host/index1.m3u8----First look
+                https://host/index2.m3u8----Second view
                 https://host/index3.m3u8" v-model="m3u8_urls"></el-input>
                                         </el-form-item>
-                                        <el-form-item label="附加头" label-position="right">
-                                            <el-input type="textarea" :rows="4" placeholder="[可空] 请输入一行一个Header，例如：
+                                        <el-form-item label="additional header" label-position="right">
+                                            <el-input type="textarea" :rows="4" placeholder="[can be empty] Please enter one per line Header, for example:
                 Origin: http://www.host.com
                 Referer: http://www.host.com" v-model="headers"></el-input>
                                         </el-form-item>
-                                        <el-form-item label="合并完成" label-position="right">
-                                            <el-checkbox v-model="taskIsDelTs" label="删除TS片段"></el-checkbox>
+                                        <el-form-item label="Merge completed" label-position="right">
+                                            <el-checkbox v-model="taskIsDelTs" label="Delete TS segment"></el-checkbox>
                                         </el-form-item>
                                         <el-form-item>
-                                            <el-button class="mybutton" type="primary" @click="clickNewTaskMuti">批量下载
+                                            <el-button class="mybutton" type="primary" @click="clickNewTaskMuti">Batch download
                                             </el-button>
                                         </el-form-item>
                                     </el-form>
                                 </el-tab-pane>
-                                <el-tab-pane label="合并视频片段">
+                                <el-tab-pane label="Merge video clips">
                                     <el-row :gutter="8" style="margin-bottom: 5px;">
                                         <el-col :span="2" :offset="1">
-                                            <span style="line-height: 40px;float: right;">视频片段</span>
+                                            <span style="line-height: 40px;float: right;">video clip</span>
                                         </el-col>
                                         <el-col :span="20">
                                             <div @drop="dropTSFiles" @dragover.prevent @dragenter.prevent>
-                                                <el-input placeholder="选择一个包含TS流的目录或将所有TS文件拖拽至此" v-model="ts_dir"
+                                                <el-input placeholder="Select a directory containing TS streams or drag and drop all TS files here" v-model="ts_dir"
                                                     clearable draggable="false">
                                                     <i slot="suffix" class="el-input__icon el-icon-folder-opened"
                                                         @click="clickSelectTSDir"></i>
@@ -206,10 +207,10 @@
                                     </el-row>
                                     <el-row :gutter="8" style="margin-bottom: 5px;">
                                         <el-col :span="2" :offset="1">
-                                            <span style="line-height: 40px;float: right;">合并名称</span>
+                                            <span style="line-height: 40px;float: right;">merge name</span>
                                         </el-col>
                                         <el-col :span="20">
-                                            <el-input placeholder="[可空] 默认当前时间戳" v-model="tsTaskName" clearable
+                                            <el-input placeholder="[nullable] Default current timestamp" v-model="tsTaskName" clearable
                                                 draggable="false"></el-input>
                                         </el-col>
                                     </el-row>
@@ -217,23 +218,23 @@
                                         <el-col :span="7" :offset="3">
                                             <div>
                                                 <el-radio style="line-height: 40px;" v-model="tsMergeType"
-                                                    label="speed">快速合并
+                                                    label="speed">Quick merge
                                                 </el-radio>
                                                 <el-radio style="line-height: 40px;" v-model="tsMergeType"
                                                     label="transcoding">
-                                                    修复合并(慢|转码)</el-radio>
+                                                    Fix merging (slow | transcoding)</el-radio>
                                             </div>
                                         </el-col>
                                         <el-col :span="6" :offset="1">
-                                            <span style="line-height: 40px;">共导入 {{ts_urls.length}} 个视频片段</span>
+                                            <span style="line-height: 40px;">Total import {{ts_urls.length}} video clips</span>
                                         </el-col>
                                         <el-col :span="3" :offset="1">
                                             <el-button class="mybutton" type="primary" @click="clickStartMergeTS"
-                                                :disabled="ts_urls.length==0">开始合并</el-button>
+                                                :disabled="ts_urls.length==0">Start merging</el-button>
                                         </el-col>
                                         <el-col :span="2">
                                             <el-button class="mybutton" type="danger" @click="clickClearMergeTS"
-                                                :disabled="ts_urls.length==0">清空</el-button>
+                                                :disabled="ts_urls.length==0">Clear</el-button>
                                         </el-col>
                                     </el-row>
 
@@ -241,9 +242,9 @@
                                         v-if="tsMergeStatus">
                                         <el-col :span="2" :offset="1">
                                             <span v-if="tsMergeStatus !='success'"
-                                                style="line-height: 100px;float: right;">合并进度</span>
+                                                style="line-height: 100px;float: right;">Merge progress</span>
                                             <span v-if="tsMergeStatus =='success'"
-                                                style="line-height: 40px;float: right;">查看文件</span>
+                                                style="line-height: 40px;float: right;">View Files</span>
                                         </el-col>
                                         <el-col :span="6" v-if="tsMergeStatus !='success'">
                                             <el-progress type="circle" :percentage="tsMergeProgress" status="success"
@@ -251,18 +252,18 @@
                                         </el-col>
                                         <el-col :span="4" v-else>
                                             <el-button class="mybutton" type="success" @click="clickOpenMergeTSDir">
-                                                打开文件夹
+                                                open folder
                                             </el-button>
                                         </el-col>
                                         <el-col :span="4" v-if="tsMergeMp4Path">
-                                            <el-button class="mybutton" type="success" @click="clickPlayMergeMp4">播放视频
+                                            <el-button class="mybutton" type="success" @click="clickPlayMergeMp4">Play video
                                             </el-button>
                                         </el-col>
                                     </el-row>
 
                                     <el-row :gutter="8" v-if="tsMergeStatus !='success' && tsMergeStatus">
                                         <el-col :span="2" :offset="1">
-                                            <span style="line-height: 40px;float: right;">日志</span>
+                                            <span style="line-height: 40px;float: right;">log</span>
                                         </el-col>
                                         <el-col :span="20">
                                             <el-input type="textarea" :rows="4" readonly placeholder=""
@@ -274,14 +275,14 @@
                             </el-tabs>
                         </el-tab-pane>
                         <el-tab-pane>
-                            <span slot="label"><i class="el-icon-view"></i> 资源嗅探</span>
+                            <span slot="label"><i class="el-icon-view"></i> Resource sniffing</span>
                             <el-container>
                                 <el-container>
                                     <el-header class="navigatorTop">
                                         <i class="el-icon-arrow-left tooltip-icon" @click="navigateBy(-1)" title="go back"></i>
                                         <i class="el-icon-arrow-right tooltip-icon" @click="navigateBy(1)" title="go forward"></i>
                                         <i class="el-icon-refresh-right tooltip-icon" @click="navigateBy(0)" title="reload this page"></i>
-                                        <el-input type="text" v-model="navigatorInput" placeholder="请输入 url" clearable @change="clickNaviagte"></el-input>
+                                        <el-input type="text" v-model="navigatorInput" placeholder="please enter url" clearable @change="clickNaviagte"></el-input>
                                     </el-header>
                                     <el-main style="padding: 0;">
                                         <webview id="browser" style="height: 100%;" :src="navigatorUrl"
@@ -304,44 +305,44 @@
                                                 <el-col :span="18"><el-input type="text" readonly :value="item.key"></el-input></el-col>
                                             </el-row>
                                             <el-row :gutter="10">
-                                                <el-col :offset="8" :span="8"><el-button>浏览</el-button></el-col>
-                                                <el-col :span="8"><el-button>下载</el-button></el-col>
+                                                <el-col :offset="8" :span="8"><el-button>Browse</el-button></el-col>
+                                                <el-col :span="8"><el-button>download</el-button></el-col>
                                             </el-row>
                                         </li>
                                     </ul>
                                 </el-aside>
                             </el-container>
                         </el-tab-pane>
-                        <el-tab-pane label="软件设置" name="setting">
-                            <span slot="label"><i class="el-icon-s-tools"></i> 软件设置</span>
+                        <el-tab-pane label="Software settings" name="setting">
+                            <span slot="label"><i class="el-icon-s-tools"></i> Software settings</span>
                             <el-row :gutter="8">
                                 <el-col :span="2" :offset="1">
-                                    <span style="line-height: 40px;float: right;">视频存储</span>
+                                    <span style="line-height: 40px;float: right;">video storage</span>
                                 </el-col>
                                 <el-col :span="18">
-                                    <el-input placeholder="请单击右侧按钮选择存储文件夹" v-model="config_save_dir" :readonly="true">
+                                    <el-input placeholder="Please click the button on the right to select the storage folder" v-model="config_save_dir" :readonly="true">
                                     </el-input>
                                 </el-col>
                                 <el-col :span="2">
                                     <el-button class="mybutton" type="primary" icon="el-icon-folder-opened"
-                                        @click="clickOpenConfigDir">浏览</el-button>
+                                        @click="clickOpenConfigDir">Browse</el-button>
                                 </el-col>
                             </el-row>
                             <br />
                             <el-row :gutter="8">
                                 <el-col :span="2" :offset="1">
-                                    <span style="line-height: 40px;float: right;">日志</span>
+                                    <span style="line-height: 40px;float: right;">log</span>
                                 </el-col>
                                 <el-col :span="4">
                                     <el-button class="mybutton" type="primary" icon="el-icon-view"
-                                        @click="clickOpenLogDir">查看日志目录</el-button>
+                                        @click="clickOpenLogDir">View log directory</el-button>
                                 </el-col>
                                 <el-col :span="4" :offset="1">
-                                    <span style="line-height: 40px;float: right;">HTTP代理</span>
+                                    <span style="line-height: 40px;float: right;">HTTP proxy</span>
                                 </el-col>
 
                                 <el-col :span="9">
-                                    <el-input placeholder="请输入HTTP代理(如：http://127.0.0.1:7890 )" v-model="config_proxy"
+                                    <el-input placeholder="Please enter HTTP proxy(如：http://127.0.0.1:7890 )" v-model="config_proxy"
                                         @change="proxyChange"></el-input>
                                 </el-col>
                             </el-row>
@@ -352,7 +353,7 @@
                                     <el-card class="paycode alipay" shadow="always">
                                         <img class="image" src="icon/alipay_code.png">
                                         <div style="padding: 14px;word-break: keep-all;">
-                                            <span>支付宝赞助</span>
+                                            <span>Alipay sponsorship</span>
                                         </div>
                                     </el-card>
                                 </el-col>
@@ -360,29 +361,29 @@
                                     <el-card class="paycode wechat" shadow="always">
                                         <img class="image" src="icon/wechat_code.png">
                                         <div style="padding: 14px;word-break: keep-all;">
-                                            <span>微信赞助</span>
+                                            <span>WeChat sponsorship</span>
                                         </div>
                                     </el-card>
                                 </el-col>
                             </el-row>
                             <el-row :gutter="8">
                                 <el-col :span="12" :offset="6">
-                                    <el-alert title="开发不易，如果您觉得此款软件对您有帮助，可以请小哥哥喝杯咖啡吗?" type="error" :center="true"
+                                    <el-alert title="Development is not easy. If you think this software is helpful to you, can you buy me a cup of coffee?" type="error" :center="true"
                                         :closable="false">
                                     </el-alert>
                                 </el-col>
                             </el-row>
                         </el-tab-pane>
-                        <el-tab-pane label="交流反馈">
-                            <span slot="label"><i class="el-icon-chat-dot-square"></i> 交流反馈</span>
+                        <el-tab-pane label="Exchange feedback">
+                            <span slot="label"><i class="el-icon-chat-dot-square"></i> Exchange feedback</span>
                             <el-row :gutter="8">
                                 <el-col :span="22">
-                                    <el-alert title="警示：【天网恢恢疏而不漏】遵纪守法是每位公民应尽的义务，严禁在此发布违规违法内容，否则后果自负！违规内容举报QQ：1586462"
+                                    <el-alert title="Warning: [Tianwang is careful not to miss anything] Complying with laws and regulations is the obligation of every citizen. It is strictly prohibited to post illegal content here, otherwise you will be responsible for the consequences! Report illegal content QQ：1586462"
                                         type="warning" :center="true" :closable="false" show-icon>
                                     </el-alert>
                                 </el-col>
                                 <el-col :span="2">
-                                    <el-button class="mybutton" type="success" @click="clickRefreshComment">刷新
+                                    <el-button class="mybutton" type="success" @click="clickRefreshComment">refresh
                                     </el-button>
                                     </el-alert>
                                 </el-col>
@@ -390,7 +391,7 @@
                             <section id="comments" class="vcomment"></section>
                         </el-tab-pane>
                         <el-tab-pane label="我的信息">
-                            <span slot="label"><i class="el-icon-s-custom"></i> 我</span>
+                            <span slot="label"><i class="el-icon-s-custom"></i> I</span>
                         </el-tab-pane>
                     </el-tabs>
                 </el-main>
