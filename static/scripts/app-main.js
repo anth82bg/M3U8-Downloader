@@ -55,7 +55,7 @@ const _app = new Vue({
             });
             ipcRenderer.on('open-select-ts-select-reply',function(event,data){
                 that.ts_urls = data;
-                that.ts_dir = `选择了 [${that.ts_urls.length}] 个视频`;
+                that.ts_dir = `chosen [${that.ts_urls.length}] videos`;
             });
 
             ipcRenderer.on('task-add-reply',function(event,data){
@@ -70,7 +70,7 @@ const _app = new Vue({
                 }
                 that.playlists = data.playlists;
                 that.playlistUri = that.playlists[0].uri;
-                that.addTaskMessage = "请选择一种画质";
+                that.addTaskMessage = "Please select an image quality";
             });
             ipcRenderer.on('task-notify-create',function(event,data){
                 that.allVideos.splice(0,0,data);
@@ -186,7 +186,7 @@ const _app = new Vue({
             if(!this.config_save_dir)
             {
                 this.clickGotoSettingTab();
-                this.$message({title: '提示',type: 'error',message: "请先设置存储路径，再开始下载视频",offset:100,duration:1000});
+                this.$message({title: 'hint',type: 'error',message: "Please set the storage path first before starting to download the video",offset:100,duration:1000});
                 return;
             }
             this.dlg_newtask_visible = true;
@@ -219,11 +219,11 @@ const _app = new Vue({
                      url_prefix:this.m3u8_url_prefix
                 });
 
-                this.addTaskMessage = "正在检查链接..."
+                this.addTaskMessage = "Checking link..."
             }
             else
             {
-                this.$message({title: '提示',type: 'error',message: "请输入正确的M3U8-URL或者导入(.m3u8)文件",offset:100,duration:1000});
+                this.$message({title: 'hint',type: 'error',message: "Please enter the correct M3U8-URL or import (.m3u8) file",offset:100,duration:1000});
             }
         },
         clickClearTask:function(e){
@@ -234,7 +234,7 @@ const _app = new Vue({
             if(!this.config_save_dir)
             {
                 this.clickGotoSettingTab();
-                this.$message({title: '提示',type: 'error',message: "请先设置存储路径，再开始下载视频",offset:100,duration:1000});
+                this.$message({title: 'hint',type: 'error',message: "Please set the storage path first before starting to download the video",offset:100,duration:1000});
                 return;
             }
             if( this.m3u8_urls != '')
@@ -250,7 +250,7 @@ const _app = new Vue({
             }
             else
             {
-                this.$message({title: '提示',type: 'error',message: "请输入正确的M3U8-URL",offset:100,duration:1000});
+                this.$message({title: 'hint',type: 'error',message: "Please enter the correct M3U8-URL",offset:100,duration:1000});
             }
         },
         clickOpenConfigDir:function(e){
@@ -261,7 +261,7 @@ const _app = new Vue({
             var opt = that.getAttribute('opt');
             if(opt == "StartOrStop")
             {
-                that.value = that.value == "停止"?"重新开始":"停止";
+                that.value = that.value == "stop"?"restart":"stop";
             }
             ipcRenderer.send(that.getAttribute('opt'),that.getAttribute('data'));
         },
@@ -270,21 +270,21 @@ const _app = new Vue({
             const attr = playlist.attributes;
             if(attr.BANDWIDTH)
             {
-                return `码率 - ${attr.BANDWIDTH}`;
+                return `Code rate - ${attr.BANDWIDTH}`;
             }
             if(attr.bandwidth)
             {
-                return `码率 - ${attr.bandwidth}`;
+                return `Code rate - ${attr.bandwidth}`;
             }
             if(attr.RESOLUTION)
             {
-                return `分辨率 - ${attr.RESOLUTION.width}x${attr.RESOLUTION.height}`;
+                return `resolution - ${attr.RESOLUTION.width}x${attr.RESOLUTION.height}`;
             }
             if(attr.resolution)
             {
-                return `分辨率 - ${attr.resolution.width}x${attr.resolution.height}`;
+                return `resolution - ${attr.resolution.width}x${attr.resolution.height}`;
             }
-            return '链接 - ' + playlist.uri;
+            return 'Link - ' + playlist.uri;
         },
         proxyChange:function(){
             ipcRenderer.send('set-config',{key:'config_proxy',value:this.config_proxy});
@@ -292,10 +292,10 @@ const _app = new Vue({
         m3u8UrlChange:function(){
             this.playlists = [];
             this.playlistUri = '';
-            this.addTaskMessage = "请输入M3U8视频源";
+            this.addTaskMessage = "Please enter M3U8 video source";
         },
         notifyTaskStatus:function(code,message){
-            this.$notify({title: '提示',type: (code == 0? 'success':'error'),message: message,showClose: true,duration:3000,position:'bottom-right'});
+            this.$notify({title: 'hint',type: (code == 0? 'success':'error'),message: message,showClose: true,duration:3000,position:'bottom-right'});
         },
         clickOpenLogDir:function(e){
             ipcRenderer.send('open-log-dir');
@@ -314,7 +314,7 @@ const _app = new Vue({
             if(!this.config_save_dir)
             {
                 this.clickGotoSettingTab();
-                this.$message({title: '提示',type: 'error',message: "请先设置存储路径，再开始下载视频",offset:100,duration:1000});
+                this.$message({title: 'hint',type: 'error',message: "Please set the storage path first before starting to download the video",offset:100,duration:1000});
                 return;
             }
             ipcRenderer.send('start-merge-ts',{
@@ -370,7 +370,7 @@ const _app = new Vue({
             if(_filePath.length)
             {
                 this.ts_urls = _filePath;
-                this.ts_dir = `选择了 [${_filePath.length}] 个视频`;
+                this.ts_dir = `chosen [${_filePath.length}] videos`;
 
             }else if(e.dataTransfer.files.length == 1)
             {
@@ -392,7 +392,7 @@ const _app = new Vue({
                 verify: verify,
                 appId: "dYhmAWg45dtYACWfTUVR2msp-gzGzoHsz",
                 appKey: "SbuBYWY21MPOSVUCTHdVlXnx",
-                placeholder: "可以在这里进行咨询交流",
+                placeholder: "You can consult and communicate here",
                 pageSize:'100',
                 avatar:'mm',
                 lang:'zh-cn',
