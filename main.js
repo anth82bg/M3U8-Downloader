@@ -600,7 +600,7 @@ ipcMain.on('task-add', async function (event, object) {
             parser.manifest.segments.forEach(segment => {
                 duration += segment.duration;
             });
-            info = `点播资源解析成功，有 ${count_seg} 个片段，时长：${formatTime(duration)}，即将开始缓存...`;
+            info = `点播资源解析成功，有 ${count_seg} 个fragment，时长：${formatTime(duration)}，即将开始缓存...`;
             startDownload(object);
         } else {
             info = `直播资源解析成功，即将开始缓存...`;
@@ -1007,7 +1007,7 @@ async function startDownload(object, iidx) {
                 video.success = false;
 
                 logger.info(`URL:${video.url} | ${this.segment.uri} download failed`);
-                video.status = "多次尝试，下载片段失败";
+                video.status = "多次尝试，下载fragment失败";
                 mainWindow.webContents.send('task-notify-end', video);
 
                 fs.writeFileSync(pathVideoDB, JSON.stringify(videoDatas));
@@ -1021,7 +1021,7 @@ async function startDownload(object, iidx) {
         }
 
         logger.info('download success');
-        video.status = "已完成，合并中...";
+        video.status = "completed，Merging...";
         mainWindow.webContents.send('task-notify-end', video);
         let fileSegments = [];
         for (let iSeg = 0; iSeg < segments.length; iSeg++) {
@@ -1031,9 +1031,9 @@ async function startDownload(object, iidx) {
             }
         }
         if (!fileSegments.length) {
-            video.status = "下载失败，请检查链接有效性";
+            video.status = "Download failed, please check link validity";
             mainWindow.webContents.send('task-notify-end', video);
-            logger.error(`[${url}] 下载失败，请检查链接有效性`);
+            logger.error(`[${url}] Download failed, please check link validity`);
             return;
         }
         let outPathMP4 = path.join(dir, Date.now() + ".mp4");
@@ -1049,7 +1049,7 @@ async function startDownload(object, iidx) {
                 .on('error', (error) => {
                     logger.error(error)
                     video.videopath = "";
-                    video.status = "合并出错，请尝试手动合并";
+                    video.status = "Download failed, please check link validity";
                     mainWindow.webContents.send('task-notify-end', video);
 
                     fs.writeFileSync(pathVideoDB, JSON.stringify(videoDatas));
@@ -1058,7 +1058,7 @@ async function startDownload(object, iidx) {
                     logger.info(`${outPathMP4} merge finished.`)
                     video.videopath = "";
                     fs.existsSync(outPathMP4) && (fs.renameSync(outPathMP4, outPathMP4_), video.videopath = outPathMP4_);
-                    video.status = "已完成"
+                    video.status = "completed"
                     mainWindow.webContents.send('task-notify-end', video);
                     if (video.taskIsDelTs) {
                         let index_path = path.join(dir, 'index.txt');
@@ -1076,7 +1076,7 @@ async function startDownload(object, iidx) {
 
             for (let i = 0; i < fileSegments.length; i++) {
                 let percent = Number.parseInt((i + 1) * 100 / fileSegments.length);
-                video.status = `合并中[${percent}%]`;
+                video.status = `Merging[${percent}%]`;
                 mainWindow.webContents.send('task-notify-end', video);
                 let filePath = fileSegments[i];
                 fs.existsSync(filePath) && ffmpegInputStream.push(fs.readFileSync(filePath));
@@ -1089,7 +1089,7 @@ async function startDownload(object, iidx) {
             ffmpegInputStream.push(null);
         } else {
             video.videopath = outPathMP4;
-            video.status = "已完成，未发现本地FFMPEG，不进行合成。"
+            video.status = "completed，No native FFMPEG found, no synthesis performed."
             mainWindow.webContents.send('task-notify-end', video);
         }
     });
@@ -1172,9 +1172,9 @@ async function startDownloadLive(object) {
 
             let count_seg = parser.manifest.segments.length;
             let segments = parser.manifest.segments;
-            logger.info(`解析到 ${count_seg} 片段`)
+            logger.info(`parse to ${count_seg} fragment`)
             if (count_seg > 0) {
-                //开始下载片段的时间，下载完毕后，需要计算下次请求的时间
+                //开始下载fragment的时间，下载完毕后，需要计算下次请求的时间
                 let _startTime = new Date();
                 let _videoDuration = 0;
                 for (let iSeg = 0; iSeg < segments.length; iSeg++) {
@@ -1251,7 +1251,7 @@ async function startDownloadLive(object) {
                                         .on('error', logger.info)
                                         .on('end', function () {
                                             video.videopath = outPathMP4;
-                                            video.status = "已完成";
+                                            video.status = "completed";
                                             mainWindow.webContents.send('task-notify-end', video);
 
                                             fs.writeFileSync(pathVideoDB, JSON.stringify(videoDatas));
@@ -1259,7 +1259,7 @@ async function startDownloadLive(object) {
                                         .on('progress', logger.info);
                                 } else {
                                     video.videopath = outPathMP4;
-                                    video.status = "已完成，未发现本地FFMPEG，不进行合成。"
+                                    video.status = "completed，No native FFMPEG found, no synthesis performed."
                                     mainWindow.webContents.send('task-notify-update', video);
                                 }
                             }
@@ -1272,7 +1272,7 @@ async function startDownloadLive(object) {
                             //fs.appendFileSync(path.join(dir,'index.txt'),`file '${filpath}'\r\n`);
                             count_downloaded = count_downloaded + 1;
                             video.segment_downloaded = count_downloaded;
-                            video.status = `直播中... [${count_downloaded}]`;
+                            video.status = `Live broadcast... [${count_downloaded}]`;
                             mainWindow.webContents.send('task-notify-update', video);
                             break;
                         }
@@ -1300,7 +1300,7 @@ async function startDownloadLive(object) {
 
     if (count_downloaded <= 0) {
         video.videopath = '';
-        video.status = "已完成，下载失败"
+        video.status = "completed，download failed"
         mainWindow.webContents.send('task-notify-end', video);
         return;
     }
@@ -1370,7 +1370,7 @@ ipcMain.on('StartOrStop', function (event, arg) {
 
     let id = Number.parseInt(arg);
     if (globalCond[id] == null) {
-        logger.info("不存在此任务")
+        logger.info("This task does not exist")
         return;
     }
     globalCond[id] = !globalCond[id];
@@ -1420,14 +1420,14 @@ ipcMain.on('set-config', function (event, data) {
 
 ipcMain.on('open-config-dir', function (event, arg) {
     let SaveDir = pathDownloadDir;
-    logger.debug(`初始目录 ${SaveDir}`);
+    logger.debug(`initial directory ${SaveDir}`);
     dialog.showOpenDialog(mainWindow, {
-        title: "请选择文件夹",
+        title: "Please select a folder",
         defaultPath: SaveDir ? SaveDir : '',
         properties: ['openDirectory', 'createDirectory'],
     }).then(result => {
         if (!result.canceled && result.filePaths.length == 1) {
-            logger.debug(`选择目录 ${result.filePaths}`);
+            logger.debug(`Select directory ${result.filePaths}`);
             pathDownloadDir = result.filePaths[0];
             nconf.set('SaveVideoDir', pathDownloadDir);
             nconf.save();
@@ -1443,7 +1443,7 @@ ipcMain.on('open-config-dir', function (event, arg) {
 
 ipcMain.on('open-select-m3u8', function (event, arg) {
     dialog.showOpenDialog(mainWindow, {
-        title: "请选择一个M3U8文件",
+        title: "Please select an M3U8 file",
         properties: ['openFile'],
     }).then(result => {
         if (!result.canceled && result.filePaths.length == 1) {
@@ -1474,10 +1474,10 @@ ipcMain.on('open-select-ts-dir', function (event, arg) {
         return;
     }
     dialog.showOpenDialog(mainWindow, {
-        title: "请选择欲合并的TS文件",
+        title: "Please select the TS files you want to merge",
         properties: ['openFile', 'multiSelections'],
         filters: [{
-            name: '视频片段',
+            name: '视频fragment',
             extensions: ['ts']
         }, {
             name: '所有文件',
@@ -1537,7 +1537,7 @@ ipcMain.on('start-merge-ts', async function (event, task) {
         mainWindow.webContents.send('start-merge-ts-status', {
             code: 0,
             progress: 1,
-            status: '开始合并...'
+            status: 'Start merging...'
         });
         ffmpegInputStream = new FFmpegStreamReadable(null);
 
@@ -1552,7 +1552,7 @@ ipcMain.on('start-merge-ts', async function (event, task) {
                 mainWindow.webContents.send('start-merge-ts-status', {
                     code: -2,
                     progress: 100,
-                    status: '合并出错|' + error
+                    status: 'Merge error|' + error
                 });
             })
             .on('end', function () {
@@ -1585,7 +1585,7 @@ ipcMain.on('start-merge-ts', async function (event, task) {
             mainWindow.webContents.send('start-merge-ts-status', {
                 code: 0,
                 progress: precent,
-                status: `合并中...[${precent}%]`
+                status: `Merging...[${precent}%]`
             });
         }
         ffmpegInputStream.push(null);
@@ -1593,7 +1593,7 @@ ipcMain.on('start-merge-ts', async function (event, task) {
         mainWindow.webContents.send('start-merge-ts-status', {
             code: -1,
             progress: 100,
-            status: '未检测到FFMPEG,不进行合并操作。'
+            status: 'FFMPEG is not detected and the merge operation is not performed.'
         });
     }
 });
