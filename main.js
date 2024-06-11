@@ -243,7 +243,7 @@ async function checkUpdate() {
         if (dialog.showMessageBoxSync(mainWindow, {
             type: 'question',
             buttons: ["Yes", "No"],
-            message: `检测到新版本(${_package.version})，是否要打开升级页面，下载最新版`
+            message: `New version detected(${_package.version})，Do you want to open the upgrade page and download the latest version?`
         }) == 0) {
             shell.openExternal("https://tools.heisir.cn/HLSDownload/download.html");
             return;
@@ -313,7 +313,7 @@ app.on('ready', () => {
     });
 
     const contextMenu = Menu.buildFromTemplate([{
-        label: '显示窗口',
+        label: 'display window',
         type: 'normal',
         click: () => {
             mainWindow.show();
@@ -323,7 +323,7 @@ app.on('ready', () => {
         type: 'separator'
     },
     {
-        label: '退出',
+        label: 'quit',
         type: 'normal',
         click: () => {
             aria2Server && aria2Server.stop();
@@ -510,8 +510,8 @@ app.on('activate', () => {
 ipcMain.on("hide-windows", function () {
     mainWindow && mainWindow.hide(), (firstHide && tray && (tray.displayBalloon({
         icon: path.join(__dirname, 'static', 'icon', 'logo-512.png'),
-        title: "提示",
-        content: "我隐藏到这里了哦，双击我显示主窗口！"
+        title: "hint",
+        content: "I'm hidden here. Double-click me to display the main window!"
     }), firstHide = false));
 });
 
@@ -964,7 +964,7 @@ async function startDownload(object, iidx) {
         segment_total: count_seg,
         segment_downloaded: count_downloaded,
         time: dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss"),
-        status: '初始化...',
+        status: 'initialization...',
         isLiving: false,
         headers: headers,
         taskName: taskName,
@@ -995,7 +995,7 @@ async function startDownload(object, iidx) {
         qo.then = function () {
             count_downloaded = count_downloaded + 1
             video.segment_downloaded = count_downloaded;
-            video.status = `下载中...${count_downloaded}/${count_seg}`
+            video.status = `downloading...${count_downloaded}/${count_seg}`
             if (video.success) {
                 mainWindow.webContents.send('task-notify-update', video);
             }
@@ -1008,7 +1008,7 @@ async function startDownload(object, iidx) {
                 video.success = false;
 
                 logger.info(`URL:${video.url} | ${this.segment.uri} download failed`);
-                video.status = "多次尝试，下载fragment失败";
+                video.status = "After multiple attempts, downloading the fragment failed.";
                 mainWindow.webContents.send('task-notify-end', video);
 
                 fs.writeFileSync(pathVideoDB, JSON.stringify(videoDatas));
@@ -1136,7 +1136,7 @@ async function startDownloadLive(object) {
         segment_total: count_seg,
         segment_downloaded: count_downloaded,
         time: dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss"),
-        status: '初始化...',
+        status: 'initialization...',
         isLiving: true,
         myKeyIV: myKeyIV,
         taskName: taskName,
@@ -1478,10 +1478,10 @@ ipcMain.on('open-select-ts-dir', function (event, arg) {
         title: "Please select the TS files you want to merge",
         properties: ['openFile', 'multiSelections'],
         filters: [{
-            name: '视频fragment',
+            name: 'video fragment',
             extensions: ['ts']
         }, {
-            name: '所有文件',
+            name: 'All files',
             extensions: ['*']
         }]
     }).then(result => {
