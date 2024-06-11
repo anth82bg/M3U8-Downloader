@@ -554,7 +554,7 @@ ipcMain.on('task-add', async function (event, object) {
 
     object.headers = _headers;
 
-    let info = '解析资源失败！';
+    let info = 'Failed to parse resource!';
     let code = -1;
 
     let parser = new Parser();
@@ -600,10 +600,11 @@ ipcMain.on('task-add', async function (event, object) {
             parser.manifest.segments.forEach(segment => {
                 duration += segment.duration;
             });
-            info = `点播资源解析成功，有 ${count_seg} 个fragment，时长：${formatTime(duration)}，即将开始缓存...`;
+            info = `On-demand resource parsing is successful, with ${count_seg} 个fragment，duration：${formatTime(duration)}，
+ caching is about to begin...`;
             startDownload(object);
         } else {
-            info = `直播资源解析成功，即将开始缓存...`;
+            info = `The live broadcast resource has been successfully parsed and will be cached soon....`;
             startDownloadLive(object);
         }
     } else if (parser.manifest.playlists && parser.manifest.playlists.length && parser.manifest.playlists.length >= 1) {
@@ -634,7 +635,7 @@ ipcMain.on('task-add-muti', async function (event, object) {
         });
     }
 
-    let info = '解析资源失败！';
+    let info = 'Failed to parse resource!';
     let code = -1;
     let iidx = 0;
     m3u8_urls.split(/\r|\n/g).forEach(urls => {
@@ -683,7 +684,7 @@ ipcMain.on('task-add-muti', async function (event, object) {
             }
         }
     })
-    info = `批量添加成功，正在下载...`;
+    info = `Batch added successfully, downloading now...`;
     event.sender.send('task-add-reply', {
         code: 0,
         message: info
