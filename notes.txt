@@ -42,3 +42,5 @@ https://surrit.com/f198eb1d-5430-47c9-bca5-6669b26b4ec1/640x360/video.m3u8
 'https://surrit.com/c05abdf2-a22e-4543-8aad-00e56cc84f84/1280x720/video.m3u8
 'https://surrit.com/5b23037e-0e9d-4615-b80e-40fa916c7f45/1280x720/video.m3u8
 'https://surrit.com/5dd57db8-bdd7-4c55-a5e1-1af44e8d697e/1280x720/video.m3u8
+
+https://ev-h-ph.t8cdn.com/hls/videos/201809/01/181025861/720P_4000K_181025861.mp4/index-v1-a1.m3u8?validfrom=1719225331&validto=1719232531&hdl=-1&hash=A%2BzGFhr4gjdEoxz6CW1A7rQkjFw%3D
